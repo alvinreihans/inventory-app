@@ -194,16 +194,13 @@ npm run start
 http://localhost:5000
 ```
 
-Aplikasi ini tidak memiliki halaman Register pada frontend, karena inventori umumnya memiliki kontrol user ketat. Namun proses register tetap tersedia sebagai endpoint. Untuk membuat admin/user pertama, dapat menggunakan cURL:
+Aplikasi ini tidak memiliki halaman Register pada frontend, karena inventori umumnya memiliki kontrol user ketat. Namun proses register tetap tersedia sebagai endpoint. Untuk membuat admin/user pertama, dapat menggunakan cURL (powershell):
 
 ```bash
-curl --location --request POST 'http://localhost:5000/api/users' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "username": "alvinreihans",
-  "password": "Test123#",
-  "fullname": "Alvin Reihansyah Makarim"
-}'
+curl -Method POST "http://localhost:5000/api/users" `
+-Headers @{ "Content-Type"="application/json" } `
+-Body '{"username":"alvinreihans","password":"Test123#","fullname":"Alvin Reihansyah Makarim"}'
+
 
 ```
 
@@ -277,16 +274,13 @@ http://localhost:5000
 
 # Informasi akun login default
 
-Untuk login ke dalam aplikasi silahkan jalankan command cURL ini terlebih dahulu:
+Untuk login ke dalam aplikasi silahkan jalankan command cURL (powershell) ini terlebih dahulu:
 
 ```bash
-curl --location --request POST 'http://localhost:5000/api/users' \
---header 'Content-Type: application/json' \
---data-raw '{
-  "username": "alvinreihans",
-  "password": "Test123#",
-  "fullname": "Alvin Reihansyah Makarim"
-}'
+curl -Method POST "http://localhost:5000/api/users" `
+-Headers @{ "Content-Type"="application/json" } `
+-Body '{"username":"alvinreihans","password":"Test123#","fullname":"Alvin Reihansyah Makarim"}'
+
 ```
 
 Lalu anda dapat masuk dengan username `alvinreihans` dan password `Test123#`

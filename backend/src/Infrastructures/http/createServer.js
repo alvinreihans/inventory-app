@@ -4,6 +4,11 @@ const ClientError = require('../../Commons/exceptions/ClientError');
 const DomainErrorTranslator = require('../../Commons/exceptions/DomainErrorTranslator');
 const users = require('../../Interfaces/http/api/users');
 const authentications = require('../../Interfaces/http/api/authentications');
+const categories = require('../../Interfaces/http/api/categories');
+const items = require('../../Interfaces/http/api/items');
+const warehouse = require('../../Interfaces/http/api/warehouses');
+const stock = require('../../Interfaces/http/api/stocks');
+const dashboards = require('../../Interfaces/http/api/dashboards');
 
 const createServer = async (container) => {
   const server = Hapi.server({
@@ -21,31 +26,57 @@ const createServer = async (container) => {
     },
   ]);
 
-  // // mendefinisikan strategy autentikasi jwt
-  // server.auth.strategy('inventory_api_jwt', 'jwt', {
-  //   keys: process.env.ACCESS_TOKEN_KEY,
-  //   verify: {
-  //     aud: false,
-  //     iss: false,
-  //     sub: false,
-  //     maxAgeSec: process.env.ACCESS_TOKEN_AGE,
-  //   },
-  //   validate: (artifacts) => ({
-  //     isValid: true,
-  //     credentials: {
-  //       id: artifacts.decoded.payload.id,
-  //     },
-  //   }),
-  // });
+  // mendefinisikan strategy autentikasi jwt
+  server.auth.strategy('inventory_api_jwt', 'jwt', {
+    keys: process.env.ACCESS_TOKEN_KEY,
+    verify: {
+      aud: false,
+      iss: false,
+      sub: false,
+    },
+    validate: (artifacts) => ({
+      isValid: true,
+      credentials: {
+        id: artifacts.decoded.payload.id,
+      },
+    }),
+  });
 
   await server.register([
     {
       plugin: users,
       options: { container },
+      routes: { prefix: '/api' },
     },
     {
       plugin: authentications,
       options: { container },
+      routes: { prefix: '/api' },
+    },
+    {
+      plugin: categories,
+      options: { container },
+      routes: { prefix: '/api' },
+    },
+    {
+      plugin: items,
+      options: { container },
+      routes: { prefix: '/api' },
+    },
+    {
+      plugin: warehouse,
+      options: { container },
+      routes: { prefix: '/api' },
+    },
+    {
+      plugin: stock,
+      options: { container },
+      routes: { prefix: '/api' },
+    },
+    {
+      plugin: dashboards,
+      options: { container },
+      routes: { prefix: '/api' },
     },
   ]);
 

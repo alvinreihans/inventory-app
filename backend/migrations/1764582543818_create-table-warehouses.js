@@ -1,17 +1,16 @@
 exports.up = (pgm) => {
-  pgm.createTable('categories', {
+  pgm.createTable('warehouses', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
-    name: {
+    location: {
       type: 'VARCHAR(100)',
       notNull: true,
-      unique: true,
     },
   });
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('categories');
+  pgm.dropTable('warehouses');
 };

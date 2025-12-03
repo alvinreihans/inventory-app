@@ -4,7 +4,7 @@ const ServerTestHelper = {
     // ==== 1. Register user ====
     const registerResponse = await server.inject({
       method: 'POST',
-      url: '/users',
+      url: '/api/users',
       payload: {
         username: userPayload.username,
         password: userPayload.password,
@@ -19,7 +19,7 @@ const ServerTestHelper = {
     // ==== 2. Login user ====
     const loginResponse = await server.inject({
       method: 'POST',
-      url: '/authentications',
+      url: '/api/authentications',
       payload: {
         username: userPayload.username,
         password: userPayload.password,

@@ -3,7 +3,7 @@ const InvariantError = require('../InvariantError');
 
 describe('DomainErrorTranslator', () => {
   it('should translate error correctly', () => {
-    // Register Use Case
+    // Register User Entity
     expect(
       DomainErrorTranslator.translate(
         new Error('REGISTER_USER.NOT_CONTAIN_NEEDED_PROPERTY')
@@ -41,7 +41,7 @@ describe('DomainErrorTranslator', () => {
       )
     );
 
-    // Login Use Case
+    // User Login Entity
     expect(
       DomainErrorTranslator.translate(
         new Error('USER_LOGIN.NOT_CONTAIN_NEEDED_PROPERTY')
@@ -69,7 +69,7 @@ describe('DomainErrorTranslator', () => {
       )
     ).toStrictEqual(new InvariantError('refresh token harus string'));
 
-    // Logout Use Case
+    // Logout User Use Case
     expect(
       DomainErrorTranslator.translate(
         new Error('DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN')

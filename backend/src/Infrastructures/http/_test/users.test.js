@@ -3,7 +3,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const container = require('../../container');
 const createServer = require('../createServer');
 
-describe('/users endpoint', () => {
+describe('/api/users endpoint', () => {
   afterAll(async () => {
     await pool.end();
   });
@@ -12,7 +12,7 @@ describe('/users endpoint', () => {
     await UsersTableTestHelper.cleanTable();
   });
 
-  describe('when POST /users', () => {
+  describe('when POST /api/users', () => {
     it('should response 201 and persisted user', async () => {
       // Arrange
       const requestPayload = {
@@ -25,7 +25,7 @@ describe('/users endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: requestPayload,
       });
 
@@ -47,7 +47,7 @@ describe('/users endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: requestPayload,
       });
 
@@ -72,7 +72,7 @@ describe('/users endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: requestPayload,
       });
 
@@ -97,7 +97,7 @@ describe('/users endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: requestPayload,
       });
 
@@ -122,7 +122,7 @@ describe('/users endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: requestPayload,
       });
 
@@ -148,7 +148,7 @@ describe('/users endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: requestPayload,
       });
 

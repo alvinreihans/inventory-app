@@ -1,5 +1,5 @@
 exports.up = (pgm) => {
-  pgm.createTable('products', {
+  pgm.createTable('items', {
     id: {
       type: 'VARCHAR(50)',
       primaryKey: true,
@@ -8,24 +8,15 @@ exports.up = (pgm) => {
       type: 'VARCHAR(100)',
       notNull: true,
     },
-    stock: {
-      type: 'INT',
-      notNull: true,
-      default: 0,
-    },
-    price: {
-      type: 'DECIMAL(10,2)',
-      notNull: true,
-    },
     category_id: {
       type: 'VARCHAR(50)',
       notNull: true,
       references: '"categories"',
-      onDelete: 'CASCADE',
+      onDelete: 'cascade',
     },
   });
 };
 
 exports.down = (pgm) => {
-  pgm.dropTable('products');
+  pgm.dropTable('items');
 };

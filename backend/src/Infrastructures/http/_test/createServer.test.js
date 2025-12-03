@@ -8,7 +8,7 @@ describe('HTTP server', () => {
     // Action
     const response = await server.inject({
       method: 'GET',
-      url: '/unregisteredRoute',
+      url: '/api/unregisteredRoute',
     });
 
     // Assert
@@ -27,7 +27,7 @@ describe('HTTP server', () => {
     // Action
     const response = await server.inject({
       method: 'POST',
-      url: '/users',
+      url: '/api/users',
       payload: requestPayload,
     });
 

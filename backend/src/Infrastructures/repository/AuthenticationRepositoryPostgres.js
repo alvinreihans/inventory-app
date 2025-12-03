@@ -8,9 +8,12 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
   }
 
   async addToken(token) {
+    const expiresAt = new Date(
+      Date.now() + Number(process.env.REFRESH_TOKEN_AGE) * 1000
+    );
     const query = {
-      text: 'INSERT INTO authentications VALUES ($1)',
-      values: [token],
+      text: 'INSERT INTO authentications(token, expires_at) VALUES($1, $2)',
+      values: [token, expiresAt],
     };
 
     await this._pool.query(query);
@@ -33,6 +36,14 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
     const query = {
       text: 'DELETE FROM authentications WHERE token = $1',
       values: [token],
+    };
+
+    await this._pool.query(query);
+  }
+
+  async deleteExpiredTokens() {
+    const query = {
+      text: 'DELETE FROM authentications WHERE expires_at < NOW()',
     };
 
     await this._pool.query(query);

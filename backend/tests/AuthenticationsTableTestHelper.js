@@ -2,10 +2,10 @@
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const AuthenticationsTableTestHelper = {
-  async addToken(token) {
+  async addToken(token, expiresAt = new Date()) {
     const query = {
-      text: 'INSERT INTO authentications VALUES($1)',
-      values: [token],
+      text: 'INSERT INTO authentications(token, expires_at) VALUES($1, $2)',
+      values: [token, expiresAt],
     };
 
     await pool.query(query);

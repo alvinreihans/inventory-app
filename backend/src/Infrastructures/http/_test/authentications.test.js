@@ -5,7 +5,7 @@ const container = require('../../container');
 const createServer = require('../createServer');
 const AuthenticationTokenManager = require('../../../Applications/security/AuthenticationTokenManager');
 
-describe('/authentications endpoint', () => {
+describe('/api/authentications endpoint', () => {
   afterAll(async () => {
     await pool.end();
   });
@@ -15,7 +15,7 @@ describe('/authentications endpoint', () => {
     await AuthenticationsTableTestHelper.cleanTable();
   });
 
-  describe('when POST /authentications', () => {
+  describe('when POST /api/authentications', () => {
     it('should response 201 and new authentication', async () => {
       // Arrange
       const requestPayload = {
@@ -26,7 +26,7 @@ describe('/authentications endpoint', () => {
       // add user
       await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: {
           username: 'dicoding',
           password: 'secret',
@@ -37,7 +37,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: requestPayload,
       });
 
@@ -60,7 +60,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: requestPayload,
       });
 
@@ -81,7 +81,7 @@ describe('/authentications endpoint', () => {
       // Add user
       await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: {
           username: 'dicoding',
           password: 'secret',
@@ -92,7 +92,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: requestPayload,
       });
 
@@ -100,7 +100,9 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(401);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('kredensial yang Anda masukkan salah');
+      expect(responseJson.message).toEqual(
+        'kredensial yang Anda masukkan salah'
+      );
     });
 
     it('should response 400 if login payload not contain needed property', async () => {
@@ -113,7 +115,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: requestPayload,
       });
 
@@ -121,7 +123,9 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('harus mengirimkan username dan password');
+      expect(responseJson.message).toEqual(
+        'harus mengirimkan username dan password'
+      );
     });
 
     it('should response 400 if login payload wrong data type', async () => {
@@ -135,7 +139,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'POST',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: requestPayload,
       });
 
@@ -143,18 +147,20 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('username dan password harus string');
+      expect(responseJson.message).toEqual(
+        'username dan password harus string'
+      );
     });
   });
 
-  describe('when PUT /authentications', () => {
+  describe('when PUT /api/authentications', () => {
     it('should return 200 and new access token', async () => {
       // Arrange
       const server = await createServer(container);
       // add user
       await server.inject({
         method: 'POST',
-        url: '/users',
+        url: '/api/users',
         payload: {
           username: 'dicoding',
           password: 'secret',
@@ -164,18 +170,20 @@ describe('/authentications endpoint', () => {
       // login user
       const loginResponse = await server.inject({
         method: 'POST',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           username: 'dicoding',
           password: 'secret',
         },
       });
-      const { data: { refreshToken } } = JSON.parse(loginResponse.payload);
+      const {
+        data: { refreshToken },
+      } = JSON.parse(loginResponse.payload);
 
       // Action
       const response = await server.inject({
         method: 'PUT',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken,
         },
@@ -194,7 +202,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'PUT',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {},
       });
 
@@ -211,7 +219,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'PUT',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken: 123,
         },
@@ -230,7 +238,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'PUT',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken: 'invalid_refresh_token',
         },
@@ -246,12 +254,14 @@ describe('/authentications endpoint', () => {
     it('should return 400 if refresh token not registered in database', async () => {
       // Arrange
       const server = await createServer(container);
-      const refreshToken = await container.getInstance(AuthenticationTokenManager.name).createRefreshToken({ username: 'dicoding' });
+      const refreshToken = await container
+        .getInstance(AuthenticationTokenManager.name)
+        .createRefreshToken({ username: 'dicoding' });
 
       // Action
       const response = await server.inject({
         method: 'PUT',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken,
         },
@@ -261,11 +271,13 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('refresh token tidak ditemukan di database');
+      expect(responseJson.message).toEqual(
+        'refresh token tidak ditemukan di database'
+      );
     });
   });
 
-  describe('when DELETE /authentications', () => {
+  describe('when DELETE /api/authentications', () => {
     it('should response 200 if refresh token valid', async () => {
       // Arrange
       const server = await createServer(container);
@@ -275,7 +287,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'DELETE',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken,
         },
@@ -295,7 +307,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'DELETE',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken,
         },
@@ -305,7 +317,9 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual('refresh token tidak ditemukan di database');
+      expect(responseJson.message).toEqual(
+        'refresh token tidak ditemukan di database'
+      );
     });
 
     it('should response 400 if payload not contain refresh token', async () => {
@@ -315,7 +329,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'DELETE',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {},
       });
 
@@ -332,7 +346,7 @@ describe('/authentications endpoint', () => {
       // Action
       const response = await server.inject({
         method: 'DELETE',
-        url: '/authentications',
+        url: '/api/authentications',
         payload: {
           refreshToken: 123,
         },
